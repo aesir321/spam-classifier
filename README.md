@@ -6,6 +6,8 @@ A spam classifer based on the [spamassassin dataset](https://spamassassin.apache
 
 * Built with Python 3.9.5
 
+Some problems were experienced with installing the pip package wordcloud on Windows.  This was solved following the instructions [here](https://shuchanel.com/resolve-python-pip-error-microsoft-visual-c-14-0-or-greater-is-required/).
+
 ## Datasets
 
 Data description taken from spamassassin README
