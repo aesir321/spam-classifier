@@ -5,10 +5,17 @@ import email.policy
 
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.feature_extraction.text import CountVectorizer, _preprocess
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import precision_score, recall_score
 import matplotlib.pyplot as plt
 from bs4 import BeautifulSoup
 import urlextract
+
+from EmailToWordCounterTransformer import EmailToWordCounterTransformer
+from WordCounterToVectorTransformer import WordCounterToVectorTransformer
 
 
 DOWNLOAD_ROOT = "http://spamassassin.apache.org/old/publiccorpus/"
@@ -44,4 +51,25 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=RANDOM_STATE
 )
 
-count_vect = CountVectorizer()
+preprocess_pipeline = Pipeline(
+    [
+        ("email_to_wordcount", EmailToWordCounterTransformer()),
+        ("wordcount_to_vector", WordCounterToVectorTransformer()),
+    ]
+)
+
+X_train_transformed = preprocess_pipeline.fit_transform(X_train)
+
+log_clf = LogisticRegression(solver="lbfgs", max_iter=1000, random_state=42)
+score = cross_val_score(log_clf, X_train_transformed, y_train, cv=3, verbose=3)
+print(score.mean())
+
+X_test_transformed = preprocess_pipeline.transform(X_test)
+
+log_clf = LogisticRegression(solver="lbfgs", max_iter=1000, random_state=42)
+log_clf.fit(X_train_transformed, y_train)
+
+y_pred = log_clf.predict(X_test_transformed)
+
+print("Precision: {:.2f}%".format(100 * precision_score(y_test, y_pred)))
+print("Recall: {:.2f}%".format(100 * recall_score(y_test, y_pred)))
