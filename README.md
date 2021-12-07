@@ -30,6 +30,10 @@ Total count: 6047 messages, with about a 31% spam ratio.
 
 ## Usage instructions
 
+Install the virtual environment defined in the `requirements-dev.txt`.
+To download and unpack the data first run fetch_data.py.
+To run the classifier run the command python main.py.
+
 ## Acknowledgements
 
 Parts of this repository are based upon work from the book Hands-On Machine Learning with Scikit-Learn, Keras and Tensorflow by Aurelien Geron.
