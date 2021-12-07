@@ -11,8 +11,10 @@ class WordCounterToVectorTransformer(BaseEstimator, TransformerMixin):
         total_count = Counter()
         for word_count in X:
             for word, count in word_count.items():
-                total_count[word] += min(count, 10)
+                # Not sure why this is min(count, 10) and not just 10
+                total_count[word] += count  # min(count, 10)
         most_common = total_count.most_common()[: self.vocabulary_size]
+
         # _ to indicate learned parameter
         self.vocabulary_ = {
             word: index + 1 for index, (word, _) in enumerate(most_common)
