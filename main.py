@@ -1,18 +1,13 @@
-from collections import Counter
 import os
 import email
 import email.policy
 
 import numpy as np
 from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import CountVectorizer, _preprocess
 from sklearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_val_score
 from sklearn.metrics import precision_score, recall_score
-import matplotlib.pyplot as plt
-from bs4 import BeautifulSoup
-import urlextract
 
 from EmailToWordCounterTransformer import EmailToWordCounterTransformer
 from WordCounterToVectorTransformer import WordCounterToVectorTransformer
